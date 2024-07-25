@@ -1,5 +1,6 @@
 package org.example.w2.todo;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,6 +16,11 @@ public class TodoRegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("Todo Register doGET");
+
+        String msg ="Hello World";
+
+        req.setAttribute("msg", msg);//키와 값
+
 
         req.getRequestDispatcher("/WEB-INF/todo/register.jsp").forward(req, resp);
 
