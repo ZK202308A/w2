@@ -68,36 +68,78 @@ public class DBTests {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setConnectionTimeout(1000*10);
+        config.setMaximumPoolSize(100); //WAS의 쓰레드 개수
+        config.setMinimumIdle(1); // 처음부터 연결을 많이 하면 비용문제
+
 
         HikariDataSource ds = new HikariDataSource(config);
-        @Cleanup  Connection con = ds.getConnection();
-
-
-        String sql ="select * from tbl_todo where tno > 0 order by tno desc limit 0,10";
 
         long start = System.currentTimeMillis();
 
-        @Cleanup  PreparedStatement ps = con.prepareStatement(sql);
-        @Cleanup ResultSet rs = ps.executeQuery();
+        for (int i = 0; i < 100; i++) {
 
-        while (rs.next()) {
+            @Cleanup  Connection con = ds.getConnection();
+            String sql ="select * from tbl_todo where tno > 0 order by tno desc limit 0,10";
+            @Cleanup  PreparedStatement ps = con.prepareStatement(sql);
+            @Cleanup ResultSet rs = ps.executeQuery();
 
-            log.info(rs.getInt(1)); //tno
-            log.info(rs.getString(2)); //title
-            log.info(rs.getString(3)); //writer
+            log.info(con);
+
+
+            while (rs.next()) {
+//            log.info(rs.getInt(1)); //tno
+//            log.info(rs.getString(2)); //title
+//            log.info(rs.getString(3)); //writer
 //            log.info(rs.getTimestamp(4));
 //            log.info(rs.getTimestamp(5));
 //            log.info(rs.getBoolean(6));
-
-
-        }//end while
+            }//end while
+        }
 
         long end = System.currentTimeMillis();
-
         log.info("----------------------------------------");
         log.info(end - start);
-
     }
+
+    @Test
+    public void testSelectOLD()throws Exception {
+
+        String url ="jdbc:mariadb://localhost:13306/webdb";
+        String username ="webdbuser";
+        String password ="webdbuser";
+
+        Class.forName("org.mariadb.jdbc.Driver");
+
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i < 100; i++) {
+
+            @Cleanup  Connection con = DriverManager.getConnection(url,username,password);
+            String sql ="select * from tbl_todo where tno > 0 order by tno desc limit 0,10";
+            @Cleanup  PreparedStatement ps = con.prepareStatement(sql);
+            @Cleanup ResultSet rs = ps.executeQuery();
+
+            log.info(con);
+
+
+            while (rs.next()) {
+//            log.info(rs.getInt(1)); //tno
+//            log.info(rs.getString(2)); //title
+//            log.info(rs.getString(3)); //writer
+//            log.info(rs.getTimestamp(4));
+//            log.info(rs.getTimestamp(5));
+//            log.info(rs.getBoolean(6));
+            }//end while
+        }
+
+        long end = System.currentTimeMillis();
+        log.info("----------------------------------------");
+        log.info(end - start);
+    }
+
+
+
 }
 
 
