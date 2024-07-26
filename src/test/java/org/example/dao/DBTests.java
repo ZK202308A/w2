@@ -63,8 +63,8 @@ public class DBTests {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.mariadb.jdbc.Driver");
         config.setJdbcUrl("jdbc:mariadb://localhost:13306/webdb");
-        config.setUsername("webuser");
-        config.setPassword("webuser");
+        config.setUsername("webdbuser");
+        config.setPassword("webdbuser");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -73,7 +73,7 @@ public class DBTests {
         @Cleanup  Connection con = ds.getConnection();
 
 
-        String sql ="select * from tbl_todo where tno > 0 order by tno desc";
+        String sql ="select * from tbl_todo where tno > 0 order by tno desc limit 0,10";
 
         long start = System.currentTimeMillis();
 
