@@ -6,12 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
-import org.example.w2.bmi.Scores;
+import org.example.w2.common.PageInfo;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 @WebServlet(value = "/todo/list")
 @Log4j2
@@ -22,15 +20,9 @@ public class TodoListController extends HttpServlet {
 
         log.info("Todo List GET");
 
-        String tag = "<script src='http://192.168.219.102:8080/sample.js'></script>";
+        PageInfo pageInfo = new PageInfo(1,10,130);
 
-
-        List<Integer> nums =
-                IntStream.rangeClosed(1,10).boxed().collect(Collectors.toList());
-
-        req.setAttribute("nums", nums);
-
-        req.setAttribute("tag", tag);
+        req.setAttribute("pageInfo", pageInfo);
 
         req.getRequestDispatcher("/WEB-INF/todo/list.jsp").forward(req, resp);
 
