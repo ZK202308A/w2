@@ -20,7 +20,7 @@
     </c:if>
 
     <c:forEach begin="${pageInfo.start}" end="${pageInfo.end}" var="num">
-        <li class="page-item"><a class="page-link" href="#">${num}</a></li>
+        <li class="page-item"><a class="page-link" href="/todo/list?page=${num}">${num}</a></li>
     </c:forEach>
 
     <c:if test="${pageInfo.next}">
