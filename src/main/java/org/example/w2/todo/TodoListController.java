@@ -29,13 +29,20 @@ public class TodoListController extends HttpServlet {
 
         int page = StringUtil.getInt(pageStr, 1);
 
-        List<TodoVO> todoList = TodoDAO.INSTANCE.list();
+        try{
+            List<TodoVO> todoList = TodoDAO.INSTANCE.list(page);
 
-        PageInfo pageInfo = new PageInfo(page,10,131);
+            int total = TodoDAO.INSTANCE.getTotal();
 
-        req.setAttribute("pageInfo", pageInfo);
+            PageInfo pageInfo = new PageInfo(page,10,total);
 
-        req.getRequestDispatcher("/WEB-INF/todo/list.jsp").forward(req, resp);
+            req.setAttribute("list", todoList);
 
+            req.setAttribute("pageInfo", pageInfo);
+
+            req.getRequestDispatcher("/WEB-INF/todo/list.jsp").forward(req, resp);
+        }catch(Exception e){
+            e.printStackTrace();
+        }//end catch
     }
 }

@@ -5,13 +5,16 @@
 
 <h1>Todo List Page</h1>
 
-<h1>${pageInfo.start}</h1>
-
-<h1>${pageInfo.end}</h1>
-
-<h1>${pageInfo.prev}</h1>
-
-<h1>${pageInfo.next}</h1>
+<ul>
+    <c:forEach items="${list}" var="todo">
+        <li>
+            <div>
+                <div>${todo.tno}</div>
+                <div>${todo.title}</div>
+            </div>
+        </li>
+    </c:forEach>
+</ul>
 
 
 <ul class="pagination">
