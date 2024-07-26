@@ -23,7 +23,7 @@ public class TodoListController extends HttpServlet {
 
         String pageStr = req.getParameter("page");
 
-        log.info("pageStr: ", pageStr);
+        log.info("pageStr: " + pageStr);
 
         int page = StringUtil.getInt(pageStr, 1);
 
