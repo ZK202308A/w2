@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.example.w2.common.PageInfo;
+import org.example.w2.common.StringUtil;
 
 import java.io.IOException;
 
@@ -20,7 +21,13 @@ public class TodoListController extends HttpServlet {
 
         log.info("Todo List GET");
 
-        PageInfo pageInfo = new PageInfo(1,10,130);
+        String pageStr = req.getParameter("page");
+
+        log.info("pageStr: ", pageStr);
+
+        int page = StringUtil.getInt(pageStr, 1);
+
+        PageInfo pageInfo = new PageInfo(page,10,131);
 
         req.setAttribute("pageInfo", pageInfo);
 
