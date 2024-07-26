@@ -1,5 +1,7 @@
 package org.example.dao;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Cleanup;
 import lombok.extern.log4j.Log4j2;
 import org.example.w2.bmi.Scores;
@@ -58,15 +60,23 @@ public class DBTests {
     @Test
     public void testSelect()throws Exception {
 
-        String url ="jdbc:mariadb://localhost:13306/webdb";
-        String username ="webdbuser";
-        String password ="webdbuser";
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.mariadb.jdbc.Driver");
+        config.setJdbcUrl("jdbc:mariadb://localhost:3306/webdb");
+        config.setUsername("webuser");
+        config.setPassword("webuser");
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
-        Class.forName("org.mariadb.jdbc.Driver");
+        HikariDataSource ds = new HikariDataSource(config);
+        @Cleanup  Connection con = ds.getConnection();
+
 
         String sql ="select * from tbl_todo where tno > 0 order by tno desc";
 
-        @Cleanup Connection con = DriverManager.getConnection(url,username,password);
+        long start = System.currentTimeMillis();
+
         @Cleanup  PreparedStatement ps = con.prepareStatement(sql);
         @Cleanup ResultSet rs = ps.executeQuery();
 
@@ -75,12 +85,17 @@ public class DBTests {
             log.info(rs.getInt(1)); //tno
             log.info(rs.getString(2)); //title
             log.info(rs.getString(3)); //writer
-            log.info(rs.getTimestamp(4));
-            log.info(rs.getTimestamp(5));
-            log.info(rs.getBoolean(6));
+//            log.info(rs.getTimestamp(4));
+//            log.info(rs.getTimestamp(5));
+//            log.info(rs.getBoolean(6));
 
 
         }//end while
+
+        long end = System.currentTimeMillis();
+
+        log.info("----------------------------------------");
+        log.info(end - start);
 
     }
 }
