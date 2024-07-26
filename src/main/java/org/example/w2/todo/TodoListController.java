@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.example.w2.common.PageInfo;
 import org.example.w2.common.StringUtil;
+import org.example.w2.todo.dao.TodoDAO;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @WebServlet(value = "/todo/list")
@@ -26,6 +28,8 @@ public class TodoListController extends HttpServlet {
         log.info("pageStr: " + pageStr);
 
         int page = StringUtil.getInt(pageStr, 1);
+
+        List<TodoVO> todoList = TodoDAO.INSTANCE.list();
 
         PageInfo pageInfo = new PageInfo(page,10,131);
 

@@ -26,7 +26,6 @@
     <c:if test="${pageInfo.next}">
         <li class="page-item"><a class="page-link" href="/todo/list?page=${pageInfo.end + 1 }">Next</a></li>
     </c:if>
-
 </ul>
 
 <%@include file="../includes/footer.jsp"%>
