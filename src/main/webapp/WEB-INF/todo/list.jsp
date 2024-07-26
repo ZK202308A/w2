@@ -16,7 +16,7 @@
 
 <ul class="pagination">
     <c:if test="${pageInfo.prev}">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="/todo/list?page=${pageInfo.start - 1 }">Previous</a></li>
     </c:if>
 
     <c:forEach begin="${pageInfo.start}" end="${pageInfo.end}" var="num">
@@ -24,7 +24,7 @@
     </c:forEach>
 
     <c:if test="${pageInfo.next}">
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        <li class="page-item"><a class="page-link" href="/todo/list?page=${pageInfo.end + 1 }">Next</a></li>
     </c:if>
 
 </ul>
