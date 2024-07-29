@@ -151,4 +151,38 @@ public enum TodoDAO {
 
         return Optional.of(vo);
     }
+
+    public boolean delete(Integer tno) throws Exception {
+
+        String sql ="update tbl_todo set moddatee = now() , delflag = true where tno = ?";
+
+        @Cleanup Connection con = ConnectionUtil.INSTANCE.getDs().getConnection();
+        @Cleanup PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, tno);
+
+        int count = ps.executeUpdate();
+
+        return count == 1 ? true : false;
+    }
+
+    public boolean update(TodoVO todoVO) throws Exception {
+        String sql = """
+                update tbl_todo
+                  set
+                      title = ? ,
+                      writer =  ? ,
+                      moddatee = now()
+                where tno = ?
+                """;
+        @Cleanup Connection con = ConnectionUtil.INSTANCE.getDs().getConnection();
+        @Cleanup PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, todoVO.getTitle());
+        ps.setString(2, todoVO.getWriter());
+        ps.setInt(3, todoVO.getTno());
+
+        int count = ps.executeUpdate();
+
+        return count == 1 ? true : false;
+    }
 }

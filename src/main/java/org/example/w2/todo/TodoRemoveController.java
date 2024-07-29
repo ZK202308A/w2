@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.example.w2.common.StringUtil;
+import org.example.w2.todo.dao.TodoDAO;
 
 import java.io.IOException;
 
@@ -23,7 +24,13 @@ public class TodoRemoveController extends HttpServlet {
 
         Integer tno = StringUtil.getInt(tnoStr, -1);
 
-        boolean result = true;
+        boolean result = false;
+
+        try {
+            result = TodoDAO.INSTANCE.delete(tno);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         resp.sendRedirect("/todo/list?result="+result);
 

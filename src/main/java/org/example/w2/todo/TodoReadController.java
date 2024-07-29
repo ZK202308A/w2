@@ -47,4 +47,39 @@ public class TodoReadController extends HttpServlet {
 
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI();
+
+        log.info("uri: {} " + uri);
+
+        //  get  edit
+        String job = uri.substring(uri.lastIndexOf('/') + 1);
+
+        if(job.equals("get")){
+            resp.sendRedirect("/todo/list");
+            return;
+        }
+
+        String tnoStr = req.getParameter("tno");
+
+        Integer tno = StringUtil.getInt(tnoStr,-1);
+
+        String title = req.getParameter("title");
+        String writer = req.getParameter("writer");
+
+        TodoVO vo = TodoVO.builder()
+                .tno(tno)
+                .title(title)
+                .writer(writer)
+                .build();
+        try {
+            boolean result = TodoDAO.INSTANCE.update(vo);
+            resp.sendRedirect("/todo/get?tno="+tno);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 }

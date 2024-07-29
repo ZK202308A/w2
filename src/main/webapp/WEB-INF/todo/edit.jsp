@@ -7,6 +7,24 @@
 <h1>Edit Page</h1>
 
 ${todo}
+<form action="/todo/edit" method="post">
+    <div>
+        <label>TNO</label>
+        <input type="text" name="tno" value="${todo.tno}" readonly>
+    </div>
+    <div>
+        <label>TITLE</label>
+        <input type="text" name="title" value="${todo.title}">
+    </div>
+    <div>
+        <label>WRITER</label>
+        <input type="text" name="writer" value="${todo.writer}">
+    </div>
+    <div>
+        <button>MODIFY</button>
+    </div>
+</form>
+
 
 <form action="/todo/remove" method="post">
     <input type="hidden" name="tno"  value="${todo.tno}" >
