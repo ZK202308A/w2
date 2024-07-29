@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 public enum TodoDAO {
@@ -118,5 +119,36 @@ public enum TodoDAO {
         int total = rs.getInt(1);
 
         return total;
+    }
+
+    public Optional<TodoVO> get(Integer tno) throws Exception {
+
+        final String query = """
+                select
+                    tno, title, writer, regdate, moddatee, delflag
+                from
+                    tbl_todo
+                where tno = ?
+                """;
+
+        @Cleanup Connection con = ConnectionUtil.INSTANCE.getDs().getConnection();
+        @Cleanup PreparedStatement ps = con.prepareStatement(query);
+        ps.setInt(1, tno);
+        @Cleanup ResultSet rs = ps.executeQuery();
+
+        if( !rs.next() ){
+            return Optional.empty();
+        }
+
+        TodoVO vo = TodoVO.builder()
+            .tno(rs.getInt("tno"))
+            .title(rs.getString("title"))
+            .writer(rs.getString("writer"))
+            .regDate(rs.getTimestamp("regdate"))
+            .modDate(rs.getTimestamp("moddatee"))
+            .delFlag(rs.getBoolean("delflag"))
+            .build();
+
+        return Optional.of(vo);
     }
 }

@@ -39,7 +39,7 @@
 <h1>Todo List Page</h1>
 <a href="/todo/register">Todo Resiter</a>
 
-<c:if test="${param.tno != null}">
+<c:if test="${param.tno != null || param.result }">
     <div class="msg">
         <h1>처리 결과 입니다.</h1>
     </div>
@@ -50,7 +50,9 @@
         <li>
             <div>
                 <div>${todo.tno}</div>
-                <div>${todo.title}</div>
+                <div>
+                    <a href="/todo/get?tno=${todo.tno}">${todo.title}</a>
+                </div>
             </div>
         </li>
     </c:forEach>
