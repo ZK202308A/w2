@@ -20,6 +20,43 @@ public enum TodoDAO {
 
     }
 
+
+    public Integer insert( TodoVO todoVO) throws Exception{
+
+        // ; 없는지 주의
+        String sql = "insert into  tbl_todo (title,writer) values (?,?)";
+
+        @Cleanup Connection con = ConnectionUtil.INSTANCE.getDs().getConnection();
+        con.setAutoCommit(false);
+
+        @Cleanup PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, todoVO.getTitle());
+        ps.setString(2, todoVO.getWriter());
+
+        int count = ps.executeUpdate();
+
+        if(count != 1){
+            throw new Exception("Abnormal insertion");
+        }
+
+        ps.close();
+
+        ps = con.prepareStatement("SELECT LAST_INSERT_ID()");
+
+        @Cleanup ResultSet rs = ps.executeQuery();
+
+        rs.next();
+        Integer tno = rs.getInt(1);
+
+        log.info("TNO:........." + tno);
+
+        con.commit();
+        con.setAutoCommit(true);
+
+        return tno;
+    }
+
+
     public List<TodoVO> list(int page)throws Exception{
 
         log.info("list");
@@ -37,8 +74,9 @@ public enum TodoDAO {
                 tno > 0
             order by
                 tno desc
-            limit ?,10
+            limit  ? , 10
         """;
+
         @Cleanup Connection con = ConnectionUtil.INSTANCE.getDs().getConnection();
         @Cleanup PreparedStatement ps = con.prepareStatement(query);
         ps.setInt(1, skip);
