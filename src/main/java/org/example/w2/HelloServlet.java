@@ -4,8 +4,10 @@ import java.io.*;
 
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import lombok.extern.log4j.Log4j2;
 
 @WebServlet(name = "helloServlet", value = "/hello")
+@Log4j2
 public class HelloServlet extends HttpServlet {
     private String message;
 
@@ -15,7 +17,12 @@ public class HelloServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String msg ="HelloServlet 한글";
+        String msg = request.getParameter("msg");
+
+        log.info("msg: " +msg);
+
+        Integer.parseInt(msg);
+
 
         request.setAttribute("msg", msg);
         //
