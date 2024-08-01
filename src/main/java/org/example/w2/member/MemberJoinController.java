@@ -30,15 +30,15 @@ public class MemberJoinController extends HttpServlet {
 
         if(checkJoin == false ) {
             if(uid.equals("aaa") == false){ //동일한 사용자가 존재하지 않는 경우
-                log.info("newbie........................");
+                log.info("check join false newbie........................");
                 session.setAttribute("checkJoin", true);
             }
-            //resp.sendRedirect("/member/join");
-            resp.getWriter().println("<script>alert('aaa')</script>");
+            resp.sendRedirect("/member/join");
+            //resp.getWriter().println("<script>parent.doA('aaa')</script>");
         }else {
-            log.info("newbie.......................register");
+            log.info("check join true newbie.......................register");
             session.removeAttribute("checkJoin");
-            resp.getWriter().println("<script>alert('success')</script>");
+            //resp.getWriter().println("<script>parent.doA('success')</script>");
         }
 
 
@@ -49,9 +49,9 @@ public class MemberJoinController extends HttpServlet {
 
         HttpSession session = req.getSession();
 
-        if(session.isNew()) {
+        //if(session.isNew()) {
             session.setAttribute("checkJoin", false);
-        }
+        //}
 
         req.getRequestDispatcher("/WEB-INF/member/join.jsp").forward(req, resp);
 

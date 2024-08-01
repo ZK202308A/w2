@@ -13,7 +13,7 @@
 <body>
   <h1>MyPage</h1>
 
-  <h2>${uid}</h2>
+  <h2>${cookie.member}</h2>
 
   <form action="/logout" method="post">
       <button>LOGOUT</button>

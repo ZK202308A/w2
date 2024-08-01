@@ -2,10 +2,7 @@ package org.example.w2.member;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
@@ -32,13 +29,22 @@ public class LoginController extends HttpServlet {
         try {
             Optional<MemberVO> result = MemberDAO.INSTANCE.get(uid, upw);
 
+
             result.ifPresentOrElse( memberVO -> {
-                session.setAttribute("uid", memberVO);
+
+                Cookie loginCookie = new Cookie("member", uid);
+                loginCookie.setPath("/");
+                loginCookie.setMaxAge(60 * 60 * 24);
+
+                resp.addCookie(loginCookie);
+
                 try {
                     resp.sendRedirect("/mypage");
-                }catch(Exception e) {
-                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
+
+
             } , () -> {
                 try {
                     resp.sendRedirect("/login");
