@@ -14,6 +14,7 @@
     <form action="/login" method="post">
         <div>
             <img src="/capcha">
+            <input name="num" type="text">
         </div>
         <div>
             <input name="uid" type="text">

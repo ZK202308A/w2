@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.Cleanup;
 
 import javax.imageio.ImageIO;
@@ -32,11 +33,12 @@ public class ImageMaker extends HttpServlet {
 
         int num = (int)(Math.random() * 10000); //0 ~ 9999
 
+        HttpSession session = req.getSession();
+        session.setAttribute("tempNum", num);
+
         g.drawString("" + num, 10, 100);
 
-
         @Cleanup OutputStream out = resp.getOutputStream();
-
         ImageIO.write(image,"jpeg",out);
 
 
