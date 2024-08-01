@@ -33,7 +33,7 @@ public class MemberJoinController extends HttpServlet {
                 resp.getWriter().println("<script>parent.move()</script>");
             }else {
                 session.setAttribute("checkJoin", false);
-                resp.getWriter().println("<script>alert('fail')</script>");
+                resp.getWriter().println("<script>alert('동일한 사용자가 존재합니다.')</script>");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
