@@ -16,26 +16,13 @@
 <body>
 
 <script>
-    function doA(msg) {
-
-        if(msg === 'aaa'){
-            alert(msg)
-        }else if(msg === 'success'){
-            location.href ="/login"
-        }
-
+    function move(){
+        window.location="/login"
     }
 </script>
 
-<c:if test="${ checkJoin == false }">
-    <h1> 이미 동일한 사용자가 있을수 있다. </h1>
-</c:if>
 
-<c:if test="${ checkJoin == true }">
-    <h1> 남은 값들을 입력하세요 </h1>
-</c:if>
-
-<form action="/member/join" method="post">
+<form action="/member/join" method="post"  target='zero' >
     <div>
         <input type="text" name="uid" value="aaa">
     </div>

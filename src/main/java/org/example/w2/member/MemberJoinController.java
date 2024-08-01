@@ -24,21 +24,19 @@ public class MemberJoinController extends HttpServlet {
 
         log.info("UID...................." + uid);
 
-        boolean checkJoin = (boolean)session.getAttribute("checkJoin");
+        Object checkObj = session.getAttribute("checkJoin");
 
-        log.info("checkJoin.................." + checkJoin);
-
-        if(checkJoin == false ) {
-            if(uid.equals("aaa") == false){ //동일한 사용자가 존재하지 않는 경우
-                log.info("check join false newbie........................");
+        //check success
+        try {
+            if( MemberDAO.INSTANCE.checkExist(uid,email) == 0) {
                 session.setAttribute("checkJoin", true);
+                resp.getWriter().println("<script>parent.move()</script>");
+            }else {
+                session.setAttribute("checkJoin", false);
+                resp.getWriter().println("<script>alert('fail')</script>");
             }
-            resp.sendRedirect("/member/join");
-            //resp.getWriter().println("<script>parent.doA('aaa')</script>");
-        }else {
-            log.info("check join true newbie.......................register");
-            session.removeAttribute("checkJoin");
-            //resp.getWriter().println("<script>parent.doA('success')</script>");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
 
@@ -47,11 +45,6 @@ public class MemberJoinController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        HttpSession session = req.getSession();
-
-        //if(session.isNew()) {
-            session.setAttribute("checkJoin", false);
-        //}
 
         req.getRequestDispatcher("/WEB-INF/member/join.jsp").forward(req, resp);
 
