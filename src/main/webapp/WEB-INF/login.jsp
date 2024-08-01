@@ -12,9 +12,14 @@
 </head>
 <body>
     <form action="/login" method="post">
-        <input name="uid" type="text">
-        <input name="upw" type="password">
-        <button>LOGIN</button>
+        <div>
+            <img src="/capcha">
+        </div>
+        <div>
+            <input name="uid" type="text">
+            <input name="upw" type="password">
+            <button>LOGIN</button>
+        </div>
     </form>
 </body>
 </html>
